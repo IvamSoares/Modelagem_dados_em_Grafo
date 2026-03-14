@@ -68,3 +68,12 @@ RETURN a.name, m.title, s.title
 
 📈 Conclusão e Evidências
 O modelo provou ser eficiente para Cross-Selling (recomendar séries para quem consome filmes) e para identificar nichos de interesse baseados na equipe técnica, não apenas no título da obra.
+
+
+
+🌐 Acesso ao Banco de Dados (Live Demo)
+
+O projeto está hospedado no Neo4j AuraDB. Para visualizar o grafo em tempo real:
+
+- **URI:** neo4j+s://73aa32cb.databases.neo4j.io
+As credências de acesso foram inseridas no escopo da entrega do projeto.
