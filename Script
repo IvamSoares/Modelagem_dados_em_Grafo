@@ -1,0 +1,85 @@
+Scripts de população do banco de dados
+
+1. GÊNEROS ---
+MERGE (g1:Genre {name: 'Sci-Fi'})
+MERGE (g2:Genre {name: 'Crime'})
+MERGE (g3:Genre {name: 'Drama'})
+MERGE (g4:Genre {name: 'Ação'})
+MERGE (g5:Genre {name: 'Comédia'})
+
+2. DIRETORES E FILMES ---
+MERGE (d1:Director {name: 'Christopher Nolan'})
+MERGE (m1:Movie {title: 'Inception'}) SET m1.year = 2010
+MERGE (m2:Movie {title: 'Oppenheimer'}) SET m2.year = 2023
+MERGE (m3:Movie {title: 'The Dark Knight'}) SET m3.year = 2008
+MERGE (d1)-[:DIRECTED]->(m1) MERGE (d1)-[:DIRECTED]->(m2) MERGE (d1)-[:DIRECTED]->(m3)
+MERGE (m1)-[:IN_GENRE]->(g1) MERGE (m2)-[:IN_GENRE]->(g3) MERGE (m3)-[:IN_GENRE]->(g4)
+
+MERGE (d2:Director {name: 'Quentin Tarantino'})
+MERGE (m4:Movie {title: 'Pulp Fiction'}) SET m4.year = 1994
+MERGE (m5:Movie {title: 'Kill Bill'}) SET m5.year = 2003
+MERGE (d2)-[:DIRECTED]->(m4) MERGE (d2)-[:DIRECTED]->(m5)
+MERGE (m4)-[:IN_GENRE]->(g2) MERGE (m5)-[:IN_GENRE]->(g4)
+
+MERGE (d3:Director {name: 'Denis Villeneuve'})
+MERGE (m6:Movie {title: 'Dune'}) SET m6.year = 2021
+MERGE (m7:Movie {title: 'Blade Runner 2049'}) SET m7.year = 2017
+MERGE (d3)-[:DIRECTED]->(m6) MERGE (d3)-[:DIRECTED]->(m7)
+MERGE (m6)-[:IN_GENRE]->(g1) MERGE (m7)-[:IN_GENRE]->(g1)
+
+MERGE (d4:Director {name: 'Bong Joon-ho'})
+MERGE (m8:Movie {title: 'Parasite'}) SET m8.year = 2019
+MERGE (d4)-[:DIRECTED]->(m8)
+MERGE (m8)-[:IN_GENRE]->(g3)
+
+MERGE (d5:Director {name: 'Greta Gerwig'})
+MERGE (m9:Movie {title: 'Barbie'}) SET m9.year = 2023
+MERGE (d5)-[:DIRECTED]->(m9)
+MERGE (m9)-[:IN_GENRE]->(g5)
+
+MERGE (d6:Director {name: 'Francis Ford Coppola'})
+MERGE (m10:Movie {title: 'The Godfather'}) SET m10.year = 1972
+MERGE (d6)-[:DIRECTED]->(m10)
+MERGE (m10)-[:IN_GENRE]->(g2)
+
+3. SÉRIES E SEUS DIRETORES ---
+MERGE (d7:Director {name: 'Vince Gilligan'})
+MERGE (d8:Director {name: 'Baran bo Odar'})
+MERGE (d9:Director {name: 'Jesse Armstrong'})
+MERGE (d10:Director {name: 'David Fincher'})
+
+MERGE (s1:Series {title: 'Breaking Bad'}) MERGE (s1)-[:IN_GENRE]->(g2) MERGE (d7)-[:DIRECTED]->(s1)
+MERGE (s2:Series {title: 'Dark'}) MERGE (s2)-[:IN_GENRE]->(g1) MERGE (d8)-[:DIRECTED]->(s2)
+MERGE (s3:Series {title: 'The Bear'}) MERGE (s3)-[:IN_GENRE]->(g3) 
+MERGE (s4:Series {title: 'Succession'}) MERGE (s4)-[:IN_GENRE]->(g3) MERGE (d9)-[:DIRECTED]->(s4)
+MERGE (s5:Series {title: 'The Last of Us'}) MERGE (s5)-[:IN_GENRE]->(g4)
+MERGE (s6:Series {title: 'Severance'}) MERGE (s6)-[:IN_GENRE]->(g1)
+MERGE (s7:Series {title: 'Stranger Things'}) MERGE (s7)-[:IN_GENRE]->(g1)
+MERGE (s8:Series {title: 'The Boys'}) MERGE (s8)-[:IN_GENRE]->(g4)
+MERGE (s9:Series {title: 'Mindhunter'}) MERGE (s9)-[:IN_GENRE]->(g2) MERGE (d10)-[:DIRECTED]->(s9)
+MERGE (s10:Series {title: 'Better Call Saul'}) MERGE (s10)-[:IN_GENRE]->(g2) MERGE (d7)-[:DIRECTED]->(s10)
+
+4. ATORES E ATUAÇÕES ---
+MERGE (a1:Actor {name: 'Leonardo DiCaprio'}) MERGE (a1)-[:ACTED_IN]->(m1)
+MERGE (a2:Actor {name: 'Cillian Murphy'}) MERGE (a2)-[:ACTED_IN]->(m2)
+MERGE (a3:Actor {name: 'Christian Bale'}) MERGE (a3)-[:ACTED_IN]->(m3)
+MERGE (a4:Actor {name: 'Samuel L. Jackson'}) MERGE (a4)-[:ACTED_IN]->(m4)
+MERGE (a5:Actor {name: 'Zendaya'}) MERGE (a5)-[:ACTED_IN]->(m6)
+MERGE (a6:Actor {name: 'Ryan Gosling'}) MERGE (a6)-[:ACTED_IN]->(m7)
+MERGE (a7:Actor {name: 'Song Kang-ho'}) MERGE (a7)-[:ACTED_IN]->(m8)
+MERGE (a8:Actor {name: 'Margot Robbie'}) MERGE (a8)-[:ACTED_IN]->(m9)
+MERGE (a9:Actor {name: 'Al Pacino'}) MERGE (a9)-[:ACTED_IN]->(m10)
+MERGE (a10:Actor {name: 'Timothée Chalamet'}) MERGE (a10)-[:ACTED_IN]->(m6)
+MERGE (a11:Actor {name: 'Bob Odenkirk'}) MERGE (a11)-[:ACTED_IN]->(s1) MERGE (a11)-[:ACTED_IN]->(s10)
+
+5. USUÁRIO E RATINGS ---
+MERGE (u:User {name: 'Eduardo'})
+
+Ratings
+WITH u MATCH (mov1:Movie {title: 'Inception'}) MERGE (u)-[r1:WATCHED]->(mov1) SET r1.rating = 5
+WITH u MATCH (mov2:Movie {title: 'Dune'}) MERGE (u)-[r2:WATCHED]->(mov2) SET r2.rating = 4
+WITH u MATCH (mov3:Movie {title: 'The Dark Knight'}) MERGE (u)-[r3:WATCHED]->(mov3) SET r3.rating = 5
+WITH u MATCH (ser1:Series {title: 'Breaking Bad'}) MERGE (u)-[r4:WATCHED]->(ser1) SET r4.rating = 5
+WITH u MATCH (ser2:Series {title: 'Dark'}) MERGE (u)-[r5:WATCHED]->(ser2) SET r5.rating = 5
+WITH u MATCH (ser3:Series {title: 'The Boys'}) MERGE (u)-[r6:WATCHED]->(ser3) SET r6.rating = 3
+WITH u MATCH (ser4:Series {title: 'Succession'}) MERGE (u)-[r7:WATCHED]->(ser4) SET r7.rating = 4
